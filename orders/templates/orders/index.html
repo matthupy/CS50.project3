@@ -1,0 +1,43 @@
+{% extends "orders/base.html" %}
+
+{% block title %}
+Menu
+{% endblock %}
+
+{% block body %}
+    <h1>Pizzas</h1>
+    <ul>
+        {% for pizza in pizzas %}
+        <li>
+            {{ pizza }}
+        </li>
+        {% endfor %}
+    </ul>
+    <hr>
+    <h1>Subs</h1>
+    <ul>
+        {% for sub in subs %}
+        <li>
+            {{ sub }}
+        </li>
+        {% endfor %}
+    </ul>
+    <hr>
+    <h1>Salads</h1>
+    <ul>
+        {% for salad in salads %}
+        <li>
+            {{ salad }}
+        </li>
+        {% endfor %}
+    </ul>
+    <hr>
+    <h1>Dinner Platters</h1>
+    <ul>
+        {% for platter in platters %}
+        <li>
+            {{ platter }}
+        </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
