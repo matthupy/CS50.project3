@@ -1,43 +1,109 @@
 {% extends "orders/base.html" %}
 
 {% block title %}
-Menu
+Pinocchio's | Menu
 {% endblock %}
 
 {% block body %}
-    <h1>Pizzas</h1>
-    <ul>
-        {% for pizza in pizzas %}
-        <li>
-            {{ pizza }}
-        </li>
-        {% endfor %}
-    </ul>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <h1>Regular Pizza</h1>
+                <table>
+                    <tr>
+                        <th></th>
+                        <th>Small</th>
+                        <th>Large</th>
+                    </tr>
+                    {% for pizza in regularPizzas %}
+                    <tr>
+                        <td>{{ pizza.name }}</td>
+                        <td><a href="{% url 'pizza' pizza_id=pizza.id pizza_size='Small' %}">$ {{ pizza.smallPrice }}</a></td>
+                        <td><a href="{% url 'pizza' pizza_id=pizza.id pizza_size='Large' %}">$ {{ pizza.largePrice }}</a></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <div class="col-lg-6">
+                <h1>Sicilian Pizza</h1>
+                <table>
+                    <tr>
+                        <th></th>
+                        <th>Small</th>
+                        <th>Large</th>
+                    </tr>
+                    {% for pizza in sicilianPizzas %}
+                    <tr>
+                        <td>{{ pizza.name }}</td>
+                        <td><a href="{% url 'pizza' pizza.id %}">$ {{ pizza.smallPrice }}</a></td>
+                        <td><a href="{% url 'pizza' pizza.id %}">$ {{ pizza.largePrice }}</a></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
     <hr>
     <h1>Subs</h1>
-    <ul>
+    <table>
+        <tr>
+            <th></th>
+            <th>Small</th>
+            <th>Large</th>
+        </tr>
         {% for sub in subs %}
-        <li>
-            {{ sub }}
-        </li>
+        <tr>
+            <td>{{ sub.name }}</td>
+            <td><a href="{% url 'sub' sub.id %}">$ {{ sub.smallPrice }}</a></td>
+            <td><a href="{% url 'sub' sub.id %}">$ {{ sub.largePrice }}</a></td>
+        </tr>
         {% endfor %}
-    </ul>
+    </table>
+    <hr>
+    <h1>Pasta</h1>
+    <table>
+        <tr>
+            <th></th>
+            <th>Price</th>
+        </tr>
+        {% for pasta in pastas %}
+        <tr>
+            <td>{{ pasta.name }}</td>
+            <td><a href="{% url 'pasta' pasta.id %}">$ {{ pasta.price }}</a></td>
+        </tr>
+        {% endfor %}
+    </table>
     <hr>
     <h1>Salads</h1>
-    <ul>
+    <table>
+        <tr>
+            <th></th>
+            <th>Price</th>
+        </tr>
         {% for salad in salads %}
-        <li>
-            {{ salad }}
-        </li>
+        <tr>
+            <td>{{ salad.name }}</td>
+            <td><a href="{% url 'salad' salad.id %}">$ {{ salad.price }}</a></td>
+        </tr>
         {% endfor %}
-    </ul>
+    </table>
     <hr>
     <h1>Dinner Platters</h1>
-    <ul>
+    <table>
+        <tr>
+            <th></th>
+            <th>Small</th>
+            <th>Large</th>
+        </tr>
         {% for platter in platters %}
-        <li>
-            {{ platter }}
-        </li>
+        <tr>
+            <td>{{ platter.name }}</td>
+            <td><a href="{% url 'platter' platter.id %}">$ {{ platter.smallPrice }}</a></td>
+            <td><a href="{% url 'platter' platter.id %}">$ {{ platter.largePrice }}</a></td>
+        </tr>
         {% endfor %}
+    </table>
+    <ul>
+
     </ul>
 {% endblock %}

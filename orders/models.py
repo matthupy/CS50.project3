@@ -7,42 +7,39 @@ class PizzaType(models.Model):
 
     def __str__(self):
         return self.description
-
-class Size(models.Model):
-    code = models.CharField(max_length=3, primary_key=True)
-    description = models.CharField(max_length=64)
-
-    def __str__(self):
-        return self.description
-
-class Topping(models.Model):
+        
+class Pasta(models.Model):
     name = models.CharField(max_length=64)
+    price = models.DecimalField(max_digits=6, decimal_places=2)
 
     def __str__(self):
         return self.name
 
-class PizzaPrice(models.Model):
-    toppings = models.IntegerField(default=0)
-    size = models.ForeignKey(Size, on_delete=models.PROTECT)
-    type = models.ForeignKey(PizzaType, on_delete=models.PROTECT)
-    price = models.DecimalField(max_digits=6, decimal_places=2)
-
-    def __str__(self):
-        return(f"{self.size.description} {self.type.description} - {self.toppings} Toppings")
-
 class Pizza(models.Model):
     type = models.ForeignKey(PizzaType, on_delete=models.PROTECT)
-    size = models.ForeignKey(Size, on_delete=models.PROTECT)
-    toppings = models.ManyToManyField(Topping, blank=True)
+    name = models.CharField(max_length=64)
+    numToppings = models.IntegerField()
+    smallPrice = models.DecimalField(max_digits=6, decimal_places=2)
+    largePrice = models.DecimalField(max_digits=6, decimal_places=2)
+
+    def __str__(self):
+        return(f"{self.type} - {self.name}")
+
+class Platter(models.Model):
+    name = models.CharField(max_length=64)
+    smallPrice = models.DecimalField(max_digits=6, decimal_places=2)
+    largePrice = models.DecimalField(max_digits=6, decimal_places=2)
+
+    def __str__(self):
+        return(f"{self.name}")
 
 class Sub(models.Model):
     name = models.CharField(max_length=64)
-    size = models.ForeignKey(Size, on_delete=models.PROTECT)
-    toppings = models.ManyToManyField(Topping, blank=True)
-    price = models.DecimalField(max_digits=6, decimal_places=2)
+    smallPrice = models.DecimalField(max_digits=6, decimal_places=2)
+    largePrice = models.DecimalField(max_digits=6, decimal_places=2)
 
     def __str__(self):
-        return(f"{self.size.description} {self.name}")
+        return(f"{self.name}")
 
 class Salad(models.Model):
     name = models.CharField(max_length=64)
@@ -51,11 +48,11 @@ class Salad(models.Model):
     def __str__(self):
         return self.name
 
-class DinnerPlatter(models.Model):
+
+class Topping(models.Model):
     name = models.CharField(max_length=64)
-    size = models.ForeignKey(Size, on_delete=models.PROTECT)
-    price = models.DecimalField(max_digits=6, decimal_places=2)
 
     def __str__(self):
-        return(f"{self.size.description} {self.name}")
+        return self.name
+
 

@@ -1,4 +1,3 @@
-orders/__pycache__
-pizza/__pycache__
-.vscode
-orders/migrations/__pycache__/*
+/pizza/__pycache__
+/orders/__pycache__
+/orders/migrations/__pycache__
