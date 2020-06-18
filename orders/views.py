@@ -25,7 +25,7 @@ def pizza(request, pizza_id, pizza_size):
     except KeyError:
         # ToDo: Add logic for exceptions
         return HttpResponse("KeyError")
-    
+
     context = {
         "pizza": pizza,
         "pizza_size": pizza_size,
@@ -37,11 +37,11 @@ def pizza(request, pizza_id, pizza_size):
 def pasta(request, pasta_id):
     return HttpResponse("Pasta Detail: TODO")
 
-def sub(request, sub_id):
+def sub(request, sub_id, sub_size):
     return HttpResponse("Sub Detail: TODO")
 
 def salad(request, salad_id):
     return HttpResponse("Salad Detail: TODO")
 
-def platter(request, platter_id):
+def platter(request, platter_id, platter_size):
     return HttpResponse("Platter Detail: TODO")

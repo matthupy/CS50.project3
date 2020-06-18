@@ -35,8 +35,8 @@ Pinocchio's | Menu
                     {% for pizza in sicilianPizzas %}
                     <tr>
                         <td>{{ pizza.name }}</td>
-                        <td><a href="{% url 'pizza' pizza.id %}">$ {{ pizza.smallPrice }}</a></td>
-                        <td><a href="{% url 'pizza' pizza.id %}">$ {{ pizza.largePrice }}</a></td>
+                        <td><a href="{% url 'pizza' pizza_id=pizza.id pizza_size='Small' %}">$ {{ pizza.smallPrice }}</a></td>
+                        <td><a href="{% url 'pizza' pizza_id=pizza.id pizza_size='Large' %}">$ {{ pizza.largePrice }}</a></td>
                     </tr>
                     {% endfor %}
                 </table>
@@ -54,8 +54,8 @@ Pinocchio's | Menu
         {% for sub in subs %}
         <tr>
             <td>{{ sub.name }}</td>
-            <td><a href="{% url 'sub' sub.id %}">$ {{ sub.smallPrice }}</a></td>
-            <td><a href="{% url 'sub' sub.id %}">$ {{ sub.largePrice }}</a></td>
+            <td><a href="{% url 'sub' sub_id=sub.id sub_size='Small' %}">$ {{ sub.smallPrice }}</a></td>
+            <td><a href="{% url 'sub' sub_id=sub.id sub_size='Large' %}">$ {{ sub.largePrice }}</a></td>
         </tr>
         {% endfor %}
     </table>
@@ -98,8 +98,8 @@ Pinocchio's | Menu
         {% for platter in platters %}
         <tr>
             <td>{{ platter.name }}</td>
-            <td><a href="{% url 'platter' platter.id %}">$ {{ platter.smallPrice }}</a></td>
-            <td><a href="{% url 'platter' platter.id %}">$ {{ platter.largePrice }}</a></td>
+            <td><a href="{% url 'platter' platter_id=platter.id platter_size='Small' %}">$ {{ platter.smallPrice }}</a></td>
+            <td><a href="{% url 'platter' platter_id=platter.id platter_size='Large' %}">$ {{ platter.largePrice }}</a></td>
         </tr>
         {% endfor %}
     </table>

@@ -73,7 +73,21 @@ Pinocchio's | Pizza Order
 {% block body %}
 
     <h1>Build your Pizza!</h1>
-    <h3>{{ pizza.type }} {{ pizza.name }} Pizza</h3>
+    <table>
+        <tr>
+            <td>Size</td>
+            <td id="pizzaSize">{{ pizza_size }}</td>
+        </tr>
+        <tr>
+            <td>Type</td>
+            <td id="pizzaType">{{ pizza.type }}</td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td id="pizzaName">{{ pizza.name }}</td>
+        </tr>
+    </table>
+    <!-- <h3>{{ pizza_size }} {{ pizza.type }} {{ pizza.name }} Pizza</h3> -->
     <hr>
     <h3>Toppings</h3>
     {% for topping in toppings %}
@@ -85,6 +99,6 @@ Pinocchio's | Pizza Order
 
     <hr>
 
-    <button type="button" class="btn btn-primary btn-lg">Add to Cart</button>
+    <button type="button" class="btn btn-primary btn-lg" onclick="doAddToCart()">Add to Cart</button>
 
 {% endblock %}

@@ -6,11 +6,6 @@ table {
     font-size: 16px;
 }
 
-th, tr {
-    padding-left: 30px; 
-    padding-right: 30px;
-}
-
 tr {
     border-top: 1px solid gray;
 }
@@ -18,4 +13,9 @@ tr {
 th {
     font-size: 24px;
     font-weight: bold;
+}
+
+th, td {
+    padding-left: 30px;
+    padding-right: 30px;
 }
