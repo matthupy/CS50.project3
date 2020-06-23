@@ -1,109 +1,347 @@
-{% extends "orders/base.html" %}
+{% extends "orders/layout.html" %}
+{% load crispy_forms_tags %}
 
 {% block title %}
-Pinocchio's | Menu
+Home
 {% endblock %}
 
-{% block body %}
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-6">
-                <h1>Regular Pizza</h1>
-                <table>
-                    <tr>
-                        <th></th>
-                        <th>Small</th>
-                        <th>Large</th>
-                    </tr>
-                    {% for pizza in regularPizzas %}
-                    <tr>
-                        <td>{{ pizza.name }}</td>
-                        <td><a href="{% url 'pizza' pizza_id=pizza.id pizza_size='Small' %}">$ {{ pizza.smallPrice }}</a></td>
-                        <td><a href="{% url 'pizza' pizza_id=pizza.id pizza_size='Large' %}">$ {{ pizza.largePrice }}</a></td>
-                    </tr>
-                    {% endfor %}
-                </table>
+{% block content %}
+
+    <legend class="border-bottom mb-4">Pizzas</legend>
+
+    <div class="container menu-container">
+        <!-- PIZZAS -->
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">Regular</h5>
+                <p class="card-text">Our Regular pizza is a thin-crust or Neapolitan pizza.</p>
+                <h6 class="card-subtitle mb-2 text-muted">From $12.20</h6>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#pizzaModal">
+                    Order
+                </button>
             </div>
-            <div class="col-lg-6">
-                <h1>Sicilian Pizza</h1>
-                <table>
-                    <tr>
-                        <th></th>
-                        <th>Small</th>
-                        <th>Large</th>
-                    </tr>
-                    {% for pizza in sicilianPizzas %}
-                    <tr>
-                        <td>{{ pizza.name }}</td>
-                        <td><a href="{% url 'pizza' pizza_id=pizza.id pizza_size='Small' %}">$ {{ pizza.smallPrice }}</a></td>
-                        <td><a href="{% url 'pizza' pizza_id=pizza.id pizza_size='Large' %}">$ {{ pizza.largePrice }}</a></td>
-                    </tr>
-                    {% endfor %}
-                </table>
+        </div>
+        <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Sicilian</h5>
+                    <p class="card-text">Our Sicilian pizza is a deep-dish or thick-crust pizza.</p>
+                    <h6 class="card-subtitle mb-2 text-muted">From $23.45</h6>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#pizzaModal">
+                        Order
+                    </button>
+                </div>
+        </div>
+    </div>
+
+    <div class="container menu-container">
+        <!-- SUBS -->
+        <legend class="border-bottom mb-4">Subs</legend>
+        <div class="col-md-4">
+            {% for sub in subs %}
+                <li>
+                    {{ sub }}
+                </li>
+            {% endfor %}
+        </div>
+        <div class="col-md-4">
+            <h2>Extras</h2>
+            {% for extra in subExtras %}
+                <li>
+                    {{ extra }}
+                </li>
+            {% endfor %}
+            <br>
+            <hr>
+            <br>
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Order a Sub</h5>
+                    <p class="card-text">Add a sub to your order.</p>
+                    <h6 class="card-subtitle mb-2 text-muted">From $4.60</h6>
+                    <button type="button" class="subModalButton btn btn-primary" data-toggle="modal" data-target="#subModal">
+                        Order
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-    <hr>
-    <h1>Subs</h1>
-    <table>
-        <tr>
-            <th></th>
-            <th>Small</th>
-            <th>Large</th>
-        </tr>
-        {% for sub in subs %}
-        <tr>
-            <td>{{ sub.name }}</td>
-            <td><a href="{% url 'sub' sub_id=sub.id sub_size='Small' %}">$ {{ sub.smallPrice }}</a></td>
-            <td><a href="{% url 'sub' sub_id=sub.id sub_size='Large' %}">$ {{ sub.largePrice }}</a></td>
-        </tr>
-        {% endfor %}
-    </table>
-    <hr>
-    <h1>Pasta</h1>
-    <table>
-        <tr>
-            <th></th>
-            <th>Price</th>
-        </tr>
-        {% for pasta in pastas %}
-        <tr>
-            <td>{{ pasta.name }}</td>
-            <td><a href="{% url 'pasta' pasta.id %}">$ {{ pasta.price }}</a></td>
-        </tr>
-        {% endfor %}
-    </table>
-    <hr>
-    <h1>Salads</h1>
-    <table>
-        <tr>
-            <th></th>
-            <th>Price</th>
-        </tr>
-        {% for salad in salads %}
-        <tr>
-            <td>{{ salad.name }}</td>
-            <td><a href="{% url 'salad' salad.id %}">$ {{ salad.price }}</a></td>
-        </tr>
-        {% endfor %}
-    </table>
-    <hr>
-    <h1>Dinner Platters</h1>
-    <table>
-        <tr>
-            <th></th>
-            <th>Small</th>
-            <th>Large</th>
-        </tr>
-        {% for platter in platters %}
-        <tr>
-            <td>{{ platter.name }}</td>
-            <td><a href="{% url 'platter' platter_id=platter.id platter_size='Small' %}">$ {{ platter.smallPrice }}</a></td>
-            <td><a href="{% url 'platter' platter_id=platter.id platter_size='Large' %}">$ {{ platter.largePrice }}</a></td>
-        </tr>
-        {% endfor %}
-    </table>
-    <ul>
 
-    </ul>
-{% endblock %}
+    <br>
+
+    <div class="container menu-container">
+        <!-- PASTAS -->
+        <legend class="border-bottom mb-4">Pastas</legend>
+        <div class="col-md-4">
+            {% for pasta in pastas %}
+                <li>
+                    {{ pasta }}
+                </li>
+            {% endfor %}
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Order a Pasta</h5>
+                    <p class="card-text">Add a pasta to your order.</p>
+                    <h6 class="card-subtitle mb-2 text-muted">From $6.50</h6>
+                    <button type="button" class="pastaModalButton btn btn-primary" data-toggle="modal" data-target="#pastaModal">
+                        Order
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- DINNER PLATTERS -->
+        <legend class="border-bottom mb-4">Dinner Platters</legend>
+        <div class="col-md-4">
+            {% for dp in platters %}
+                <li>
+                    {{ dp }}
+                </li>
+            {% endfor %}
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Order a Dinner Platter</h5>
+                    <p class="card-text">Add a dinner platter to your order.</p>
+                    <h6 class="card-subtitle mb-2 text-muted">From $40.00</h6>
+                    <button type="button" class="platterModalButton btn btn-primary" data-toggle="modal" data-target="#platterModal">
+                        Order
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- SALADS -->
+        <legend class="border-bottom mb-4">Salads</legend>
+        <div class="col-md-4">
+            {% for salad in salads %}
+                <li>
+                    {{ salad }}
+                </li>
+            {% endfor %}
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Order a Salad</h5>
+                    <p class="card-text">Add a salad to your order.</p>
+                    <h6 class="card-subtitle mb-2 text-muted">From $6.25</h6>
+                    <button type="button" class="saladModalButton btn btn-primary" data-toggle="modal" data-target="#saladModal">
+                        Order
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dinner Platter Modal -->
+    <div class="modal fade" id="platterModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="platterModalLabel">Order your Dinner Platter!</h5>
+                <button type="button" class="platterModalClose close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                    <div>
+                        <form>
+                            {% csrf_token %}
+                            <fieldset class="form-group">
+                                {{ dinnerPlatterForm|crispy }}
+                            </fieldset>
+                            <button type="button" id="platterAddCart" class="addCart btn btn-primary">Add to cart</button>
+                        </form>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Keep ordering</button>
+                <a href="{% url 'checkout' %}" type="button" class="btn btn-success">Go to checkout</a>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pasta Modal -->
+    <div class="modal fade" id="pastaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="pastaModalLabel">Order your Pasta!</h5>
+                <button type="button" class="pastaModalClose close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                    <div>
+                        <form>
+                            {% csrf_token %}
+                            <fieldset class="form-group">
+                                {{ pastaForm|crispy }}
+                            </fieldset>
+                            <button type="button" id="pastaAddCart" class="addCart btn btn-primary">Add to cart</button>
+                        </form>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Keep ordering</button>
+                <a href="{% url 'checkout' %}" type="button" class="btn btn-success">Go to checkout</a>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pizza Modal -->
+    <div class="modal fade" id="pizzaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="pizzaModalLabel">Order your Pizza!</h5>
+                <button type="button" class="pizzaModalClose close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                    <div>
+                        <form>
+                            {% csrf_token %}
+
+                            <fieldset class="form-group">
+                                {{ pizzaForm|crispy }}
+                            </fieldset>
+                            <button type="button" id="pizzaAddCart" class="addCart btn btn-primary">Add to cart</button>
+                        </form>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Keep ordering</button>
+                <a href="{% url 'checkout' %}" type="button" class="btn btn-success">Go to checkout</a>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Salad Modal -->
+    <div class="modal fade" id="saladModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="saladModalLabel">Order your Salad!</h5>
+                <button type="button" class="saladModalClose close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                    <div>
+                        <form>
+                            {% csrf_token %}
+                            <fieldset class="form-group">
+                                {{ saladForm|crispy }}
+                            </fieldset>
+                            <button type="button" id="saladAddCart" class="addCart btn btn-primary">Add to cart</button>
+                        </form>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Keep ordering</button>
+                <a href="{% url 'checkout' %}" type="button" class="btn btn-success">Go to checkout</a>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sub Modal -->
+    <div class="modal fade" id="subModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="subModalLabel">Order your Sub!</h5>
+                <button type="button" class="subModalClose close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                    <div>
+                        <form>
+                            {% csrf_token %}
+                            <fieldset class="form-group">
+                                {{ subForm|crispy }}
+                            </fieldset>
+                            <button type="button" id="subAddCart" class="addCart btn btn-primary">Add to cart</button>
+                        </form>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Keep ordering</button>
+                <a href="{% url 'checkout' %}" type="button" class="btn btn-success">Go to checkout</a>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // Dinner Platter Modal Setup
+            var platterModal = document.getElementById('platterModal');
+            var platterModalButton = document.getElementsByClassName('platterModalButton')
+            var platterModalSpan = document.getElementsByClassName('platterModalClose')
+            platterModalButton.onclick = function () {
+                platterModalSpan.style.display = "block";
+            }
+
+            // Pasta Modal Setup
+            var pastaModal = document.getElementById('pastaModal');
+            var pastaModalButton = document.getElementsByClassName('pastaModalButton')
+            var pastaModalSpan = document.getElementsByClassName('pastaModalClose')
+            pastaModalButton.onclick = function () {
+                pastaModalSpan.style.display = "block";
+            }
+
+            // Pizza Modal Setup
+            var pizzaModal = document.getElementById('pizzaModal');
+            var pizzaModalButton = document.getElementsByClassName('pizzaModalButton')
+            var pizzaModalSpan = document.getElementsByClassName('pizzaModalClose')
+            pizzaModalButton.onclick = function () {
+                pizzaModalSpan.style.display = "block";
+            }
+
+            // Salad Modal Setup
+            var saladModal = document.getElementById('saladModal');
+            var saladModalButton = document.getElementsByClassName('saladModalButton')
+            var saladModalSpan = document.getElementsByClassName('saladModalClose')
+            saladModalButton.onclick = function () {
+                saladModalSpan.style.display = "block";
+            }
+
+            // Sub Modal Setup
+            var subModal = document.getElementById('subModal');
+            var subModalButton = document.getElementsByClassName('subModalButton')
+            var subModalSpan = document.getElementsByClassName('subModalClose')
+            subModalButton.onclick = function () {
+                subModalSpan.style.display = "block";
+            }
+
+
+            // Add items to the cart
+            // Item format: [name, size, extras, quantity]
+            document.querySelectorAll('.addCart').forEach(item => {
+                item.addEventListener('click', () => {
+                    // Add +1 item on every click to 'Add to cart'
+                    tmp = localStorage.getItem('cart_items');
+                    tmp = parseInt(tmp);
+                    tmp += 1;
+                    localStorage.setItem('cart_items', tmp);
+
+                    // Update 'data-items' which holds the n° of cart items
+                    document.querySelector('#cart_badge').dataset.items = tmp;
+
+                    // Update the content that is shown on the badge
+                    document.querySelector('#cart_badge').textContent = tmp;
+                });
+            });
+
+        });
+    </script>
+{% endblock content%}

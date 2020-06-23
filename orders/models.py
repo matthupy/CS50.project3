@@ -1,6 +1,7 @@
 import django.core.validators
 from django.db import models
 from django.core.exceptions import ValidationError
+from django import forms
 
 # Validations
 def validate_price(price):
@@ -12,58 +13,124 @@ def validate_price(price):
     )
 
 # Create your models here.
-class PizzaType(models.Model):
-    code = models.CharField(max_length=3, primary_key=True)
-    description = models.CharField(max_length=64)
+SIZES = (
+    ("S", "Small"),
+    ("L", "Large")
+)
 
-    def __str__(self):
-        return self.description
+STYLES = (
+    ('R', 'Regular'),
+    ('S', 'Sicilian')
+)
+
 
 class Pasta(models.Model):
-    name = models.CharField(max_length=64)
-    price = models.DecimalField(max_digits=6, decimal_places=2)
+    name = models.CharField(max_length=40)
+    price = models.DecimalField(help_text="Price in USD",max_digits=6, decimal_places=2)
 
     def __str__(self):
-        return self.name
-
-class Pizza(models.Model):
-    type = models.ForeignKey(PizzaType, on_delete=models.PROTECT)
-    name = models.CharField(max_length=64)
-    numToppings = models.IntegerField()
-    smallPrice = models.DecimalField(max_digits=6, decimal_places=2, validators=[validate_price])
-    largePrice = models.DecimalField(max_digits=6, decimal_places=2, validators=[validate_price])
-
-    def __str__(self):
-        return(f"{self.type} - {self.name}")
-
-class Platter(models.Model):
-    name = models.CharField(max_length=64)
-    smallPrice = models.DecimalField(max_digits=6, decimal_places=2)
-    largePrice = models.DecimalField(max_digits=6, decimal_places=2)
-
-    def __str__(self):
-        return(f"{self.name}")
-
-class Sub(models.Model):
-    name = models.CharField(max_length=64)
-    smallPrice = models.DecimalField(max_digits=6, decimal_places=2)
-    largePrice = models.DecimalField(max_digits=6, decimal_places=2)
-
-    def __str__(self):
-        return(f"{self.name}")
+        return f"{self.name} - $ {self.price}"
 
 class Salad(models.Model):
-    name = models.CharField(max_length=64)
-    price = models.DecimalField(max_digits=6, decimal_places=2)
+    name = models.CharField(max_length=40)
+    price = models.DecimalField(help_text="Price in USD",max_digits=6, decimal_places=2)
 
     def __str__(self):
-        return self.name
+        return f"{self.name} - $ {self.price}"
 
+class DinnerPlatter(models.Model):
+    name = models.CharField(max_length=40)
+    size = models.CharField(max_length=10, choices= SIZES)
+    price = models.DecimalField(help_text="Price in USD", max_digits=6, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.name} - {self.get_size_display()} - $ {self.price}"
+
+class SubExtra(models.Model):
+    name = models.CharField(max_length=30)
+    price = models.DecimalField(help_text="Price in USD", max_digits=6, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.name} - $ {self.price}"
+
+class Sub(models.Model):
+    name = models.CharField(max_length=40)
+    size = models.CharField(max_length=10, choices=SIZES)
+    price = models.DecimalField(help_text="Price in USD", max_digits=6, decimal_places=2)
+    extras = models.ManyToManyField(SubExtra, blank=True)
+
+    def __str__(self):
+        return f"{self.name} - {self.get_size_display()} - $ {self.price}"
 
 class Topping(models.Model):
-    name = models.CharField(max_length=64)
+    name = models.CharField(max_length=30)
 
     def __str__(self):
-        return self.name
+        return f"{self.name}"
 
+class Pizza(models.Model):
+    style = models.CharField(max_length=10, choices=STYLES)
+    size = models.CharField(max_length=10, choices=SIZES)
+    price = models.DecimalField(help_text="Price in USD", max_digits=6, decimal_places=2)
+    toppings = models.ManyToManyField(Topping)
 
+    def __str__(self):
+        return f"{self.get_style_display()} - {self.get_size_display()} - {self.price} - Toppings: {self.toppings.in_bulk()}"
+
+class PizzaOrder(Pizza):
+    CHOICES = (
+        ('CH', 'Cheese'),
+        ('1', '1 Topping'),
+        ('2', '2 Toppings'),
+        ('3', '3 Toppings'),
+        ('SP', 'Special')
+    )
+
+    style = Pizza.style
+    size = Pizza.size
+    extras = models.CharField(max_length=15 ,choices=CHOICES, default='CH')
+    toppings = Pizza.toppings
+
+    quantity = models.IntegerField(default=1)
+
+    def __str__(self):
+        return f"{self.get_style_display()} - {self.get_size_display()}"
+
+class SubOrder(Sub):
+    name = forms.ModelChoiceField(queryset=Sub.objects.all(), empty_label="(Select a Sub)")
+    size = Sub.size
+    extras = Sub.extras
+
+    quantity = models.IntegerField(default=1)
+
+    def __str__(self):
+        if self.extras.count() == 0:
+            return f"{self.get_size_display()} {self.name} - No Extras"
+        else:
+            return f"{self.get_size_display()} {self.name} - Extras: {self.extras.in_bulk()}"
+
+class DinnerPlatterOrder(DinnerPlatter):
+    name = forms.ModelChoiceField(queryset=DinnerPlatter.objects.all(), empty_label="(Select a Dinner Platter)")
+    size = DinnerPlatter.size
+
+    quantity = models.IntegerField(default=1)
+
+    def __str__(self):
+        return f"{self.get_size_display()} {self.name}"
+
+class PastaOrder(Pasta):
+    name = Pasta.name
+
+    quantity = models.IntegerField(default=1)
+
+    def __str__(self):
+        return f"{self.name}"
+
+class SaladOrder(Salad):
+    id = Salad.id
+    name = Salad.name
+
+    quantity = models.IntegerField(default=1)
+
+    def __str__(self):
+        return f"{self.name}"

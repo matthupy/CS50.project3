@@ -1,7 +1,7 @@
 {% extends "orders/base.html" %}
 
 {% block title %}
-Pinocchio's | Pizza Order
+Pizza Order
 {% endblock %}
 
 {% block script %}
@@ -58,11 +58,11 @@ Pinocchio's | Pizza Order
                 checkboxes[i].disabled = false;
             };
 
-        }       
+        }
     };
 
     document.addEventListener('DOMContentLoaded', () => {
-        
+
         // Set the state of the check boxes
         setToppingCheckboxState();
     });
@@ -73,22 +73,10 @@ Pinocchio's | Pizza Order
 {% block body %}
 
     <h1>Build your Pizza!</h1>
-    <table>
-        <tr>
-            <td>Size</td>
-            <td id="pizzaSize">{{ pizza_size }}</td>
-        </tr>
-        <tr>
-            <td>Type</td>
-            <td id="pizzaType">{{ pizza.type }}</td>
-        </tr>
-        <tr>
-            <td>Name</td>
-            <td id="pizzaName">{{ pizza.name }}</td>
-        </tr>
-    </table>
-    <!-- <h3>{{ pizza_size }} {{ pizza.type }} {{ pizza.name }} Pizza</h3> -->
     <hr>
+    <form action="">
+        
+    </form>
     <h3>Toppings</h3>
     {% for topping in toppings %}
     <div class="form-check" id="toppingsSelect">
