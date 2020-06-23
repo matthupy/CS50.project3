@@ -148,7 +148,7 @@ Home
                     <div>
                         <form>
                             {% csrf_token %}
-                            <fieldset class="form-group">
+                            <fieldset class="form-group" id="DinnerPlatterFieldset">
                                 {{ dinnerPlatterForm|crispy }}
                             </fieldset>
                             <button type="button" id="platterAddCart" class="addCart btn btn-primary">Add to cart</button>
@@ -157,7 +157,7 @@ Home
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Keep ordering</button>
-                <a href="{% url 'checkout' %}" type="button" class="btn btn-success">Go to checkout</a>
+                <a href="{% url 'checkout' %}" type="button" class="checkout btn btn-success">Go to checkout</a>
             </div>
             </div>
         </div>
@@ -177,7 +177,7 @@ Home
                     <div>
                         <form>
                             {% csrf_token %}
-                            <fieldset class="form-group">
+                            <fieldset class="form-group" id="PastaFieldSet">
                                 {{ pastaForm|crispy }}
                             </fieldset>
                             <button type="button" id="pastaAddCart" class="addCart btn btn-primary">Add to cart</button>
@@ -186,7 +186,7 @@ Home
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Keep ordering</button>
-                <a href="{% url 'checkout' %}" type="button" class="btn btn-success">Go to checkout</a>
+                <a href="{% url 'checkout' %}" type="button" class="checkout btn btn-success">Go to checkout</a>
             </div>
             </div>
         </div>
@@ -207,7 +207,7 @@ Home
                         <form>
                             {% csrf_token %}
 
-                            <fieldset class="form-group">
+                            <fieldset class="form-group" id="PizzaFieldset">
                                 {{ pizzaForm|crispy }}
                             </fieldset>
                             <button type="button" id="pizzaAddCart" class="addCart btn btn-primary">Add to cart</button>
@@ -216,7 +216,7 @@ Home
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Keep ordering</button>
-                <a href="{% url 'checkout' %}" type="button" class="btn btn-success">Go to checkout</a>
+                <a href="{% url 'checkout' %}" type="button" class="checkout btn btn-success">Go to checkout</a>
             </div>
             </div>
         </div>
@@ -236,7 +236,7 @@ Home
                     <div>
                         <form>
                             {% csrf_token %}
-                            <fieldset class="form-group">
+                            <fieldset class="form-group" id="SaladFieldset">
                                 {{ saladForm|crispy }}
                             </fieldset>
                             <button type="button" id="saladAddCart" class="addCart btn btn-primary">Add to cart</button>
@@ -245,7 +245,7 @@ Home
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Keep ordering</button>
-                <a href="{% url 'checkout' %}" type="button" class="btn btn-success">Go to checkout</a>
+                <a href="{% url 'checkout' %}" type="button" class="checkout btn btn-success">Go to checkout</a>
             </div>
             </div>
         </div>
@@ -265,7 +265,7 @@ Home
                     <div>
                         <form>
                             {% csrf_token %}
-                            <fieldset class="form-group">
+                            <fieldset class="form-group" id="SubFieldset">
                                 {{ subForm|crispy }}
                             </fieldset>
                             <button type="button" id="subAddCart" class="addCart btn btn-primary">Add to cart</button>
@@ -274,22 +274,60 @@ Home
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Keep ordering</button>
-                <a href="{% url 'checkout' %}" type="button" class="btn btn-success">Go to checkout</a>
+                <a href="{% url 'checkout' %}" type="button" class="checkout btn btn-success">Go to checkout</a>
             </div>
             </div>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for(var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // is this the cookie we want?
+                    if(cookie.substring(0, name.length+1) == (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length+1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
 
+        function addProduct(type, name, style, size, extras, toppings, quantity) {
+            let products = []; //Initialize the products list
+
+            // Get the current contents in products if it exists
+            if (localStorage.getItem('products')){
+                products = JSON.parse(localStorage.getItem('products'));
+            }
+
+            // Add the new product to the products list
+            products.push({
+                'type': type,
+                'name': name,
+                'style': style,
+                'size': size,
+                'extras': extras,
+                'toppings': toppings,
+                'quantity': quantity
+            })
+
+            // Store the updated products list in the local storage
+            localStorage.setItem('products', JSON.stringify(products));
+        }
+
+        function configureModals() {
             // Dinner Platter Modal Setup
             var platterModal = document.getElementById('platterModal');
             var platterModalButton = document.getElementsByClassName('platterModalButton')
             var platterModalSpan = document.getElementsByClassName('platterModalClose')
             platterModalButton.onclick = function () {
                 platterModalSpan.style.display = "block";
-            }
+            };
 
             // Pasta Modal Setup
             var pastaModal = document.getElementById('pastaModal');
@@ -297,7 +335,7 @@ Home
             var pastaModalSpan = document.getElementsByClassName('pastaModalClose')
             pastaModalButton.onclick = function () {
                 pastaModalSpan.style.display = "block";
-            }
+            };
 
             // Pizza Modal Setup
             var pizzaModal = document.getElementById('pizzaModal');
@@ -305,7 +343,7 @@ Home
             var pizzaModalSpan = document.getElementsByClassName('pizzaModalClose')
             pizzaModalButton.onclick = function () {
                 pizzaModalSpan.style.display = "block";
-            }
+            };
 
             // Salad Modal Setup
             var saladModal = document.getElementById('saladModal');
@@ -313,7 +351,7 @@ Home
             var saladModalSpan = document.getElementsByClassName('saladModalClose')
             saladModalButton.onclick = function () {
                 saladModalSpan.style.display = "block";
-            }
+            };
 
             // Sub Modal Setup
             var subModal = document.getElementById('subModal');
@@ -321,27 +359,146 @@ Home
             var subModalSpan = document.getElementsByClassName('subModalClose')
             subModalButton.onclick = function () {
                 subModalSpan.style.display = "block";
-            }
+            };
+        }
 
+        function addDinnerPlatterToCart() {
+            var type = 'Dinner Platter';
+            var name = null;
+            var style = $('select#platter_style').val()
+            var size = $('select#platter_size').val()
+            var extras = $('select#platter_extras').val()
+            var toppings = $('select#platter_toppings').val()
+            var quantity = $('select#platter_quantity').val()
+
+            addProduct(type, name, style, size, extras, toppings, quantity);
+        }
+
+        function addPastaToCart() {
+            var type = 'Pasta';
+            var name = $('select#pasta_name').val();
+            var style = null;
+            var size = null;
+            var extras = null;
+            var toppings = null;
+            var quantity = $('select#pasta_quantity').val()
+
+            addProduct(type, name, style, size, extras, toppings, quantity);
+        }
+
+        function addPizzaToCart() {
+            var type = 'Pizza';
+            var name = null;
+            var style = $('select#pizza_style').val()
+            var size = $('select#pizza_size').val()
+            var extras = $('select#pizza_extras').val()
+            var toppings = $('select#pizza_toppings').val()
+            var quantity = $('select#pizza_quantity').val()
+
+            addProduct(type, name, style, size, extras, toppings, quantity);
+        }
+
+        function addSaladToCart() {
+            var type = 'Salad';
+            var name = $('select#salad_name').val();
+            var style = null;
+            var size = null;
+            var extras = null;
+            var toppings = null;
+            var quantity = $('select#salad_quantity').val()
+
+            addProduct(type, name, style, size, extras, toppings, quantity);
+        }
+
+        function addSubToCart() {
+
+            var sub = {
+                'type': 'Sub',
+                'name': $('select#sub_name').val(),
+                'size': $('select#sub_size').val(),
+                'extras': $('select#sub_extras').val(),
+                'quantity': document.getElementById('sub_quantity').value
+            };
+
+            console.info(JSON.stringify(sub))
+            addToCart(sub);
+        }
+
+        function addToCart(product) {
+            // Inputs a product in JSON format
+
+            var CSRFToken = null;
+            // Get the CSRF Token
+            CSRFToken = getCookie('csrftoken');
+
+            const request = new XMLHttpRequest();
+            request.open('POST','/addToCart');
+            request.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+            request.onload = () => {
+                    updateCartBadge();
+                };
+
+            const data = new FormData();
+            data.append('product', JSON.stringify(product));
+
+            // Send the request
+            request.send(data);
+        }
+
+        function updateCartBadge() {
+            console.info('Updating cart badge')
+
+            var loginButton = document.getElementById('login_btn');
+
+            if(loginButton == null) {
+                // Update cart items count from database
+                var CSRFToken = null;
+
+                // Get the CSRF Token
+                CSRFToken = getCookie('csrftoken');
+
+                const request = new XMLHttpRequest();
+                request.open('GET','/cart');
+                request.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+                request.onload = () => {
+                    const data = request.responseText
+                    document.querySelector('#cart_badge').dataset.items = parseInt(data);
+                    document.querySelector('#cart_badge').textContent = parseInt(data);
+                };
+
+                // Send the request
+                request.send()
+            };
+
+            console.info('Cart badge updated')
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
 
             // Add items to the cart
             // Item format: [name, size, extras, quantity]
             document.querySelectorAll('.addCart').forEach(item => {
                 item.addEventListener('click', () => {
-                    // Add +1 item on every click to 'Add to cart'
-                    tmp = localStorage.getItem('cart_items');
-                    tmp = parseInt(tmp);
-                    tmp += 1;
-                    localStorage.setItem('cart_items', tmp);
-
-                    // Update 'data-items' which holds the n° of cart items
-                    document.querySelector('#cart_badge').dataset.items = tmp;
-
-                    // Update the content that is shown on the badge
-                    document.querySelector('#cart_badge').textContent = tmp;
+                    // Set item specific functions
+                    switch(item.id) {
+                        case 'platterAddCart':
+                            addDinnerPlatterToCart();
+                            break;
+                        case 'pastaAddCart':
+                            addPastaToCart();
+                            break;
+                        case 'pizzaAddCart':
+                            addPizzaToCart;
+                            break;
+                        case 'saladAddCart':
+                            addSaladToCart();
+                            break;
+                        case 'subAddCart':
+                            addSubToCart();
+                            break;
+                    }
                 });
             });
-
         });
     </script>
 {% endblock content%}

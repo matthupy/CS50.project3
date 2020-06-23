@@ -1,6 +1,7 @@
 import django.core.validators
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.contrib.auth.models import User
 from django import forms
 
 # Validations
@@ -76,6 +77,17 @@ class Pizza(models.Model):
 
     def __str__(self):
         return f"{self.get_style_display()} - {self.get_size_display()} - {self.price} - Toppings: {self.toppings.in_bulk()}"
+
+class Cart(models.Model):
+    username = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    pastas = models.ManyToManyField(Pasta, blank=True)
+    pizzas = models.ManyToManyField(Pizza, blank=True)
+    subs = models.ManyToManyField(Sub, blank=True)
+    subExtras = models.ManyToManyField(SubExtra, blank=True)
+    salads = models.ManyToManyField(Salad, blank=True)
+    toppings = models.ManyToManyField(Topping, blank=True)
+    dinnerPlatters = models.ManyToManyField(DinnerPlatter, blank=True)
+    total = models.DecimalField(help_text="Price in USD", max_digits=6, decimal_places=2, default=0)
 
 class PizzaOrder(Pizza):
     CHOICES = (

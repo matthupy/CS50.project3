@@ -63,7 +63,7 @@
                     {% else %}
                         <ul class="navbar-nav ml-auto">
                             <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+                            <li id="login_btn" class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
                         </ul>
                     {% endif %}
                     </div>
@@ -81,16 +81,49 @@
     </main>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for(var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // is this the cookie we want?
+                    if(cookie.substring(0, name.length+1) == (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length+1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
 
-            // Initialize key on localStorage
-            if (localStorage.getItem('cart_items') == null) {
-                localStorage.setItem('cart_items', 0);
+        function updateCartBadge() {
+            var loginButton = document.getElementById('login_btn');
+
+            if(loginButton == null) {
+                // Update cart items count from database
+                var CSRFToken = null;
+
+                // Get the CSRF Token
+                CSRFToken = getCookie('csrftoken');
+
+                const request = new XMLHttpRequest();
+                request.open('GET','/cart');
+                request.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+                request.onload = () => {
+                    const data = request.responseText
+                    document.querySelector('#cart_badge').dataset.items = parseInt(data);
+                    document.querySelector('#cart_badge').textContent = parseInt(data);
+                };
+
+                // Send the request
+                request.send()
             };
+        }
 
-            // Set the number of items in the cart
-            document.querySelector('#cart_badge').dataset.items = parseInt(localStorage.getItem('cart_items'));
-            document.querySelector('#cart_badge').textContent = parseInt(localStorage.getItem('cart_items'));
+        document.addEventListener('DOMContentLoaded', () => {
+            // Update the cart badge on load
+            updateCartBadge();
         });
     </script>
 </html>

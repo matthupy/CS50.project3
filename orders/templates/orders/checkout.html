@@ -6,6 +6,32 @@ Checkout
 
 {% block content %}
 
-<div class="container" style="display: flex">
+<div id="cart" class="container">
+    <h3>Subs</h3>
+    <br>
+    {% if subs %}
+        <table class="checkout_table">
+            <tr>
+                <th>Name</th>
+                <th>Size</th>
+                <th>Base Price</th>
+                <th>Extras</th>
+            </tr>
+            {% for sub in subs %}
+            <tr>
+                <td>{{ sub.name }}</td>
+                <td>{{ sub.get_size_display }}</td>
+                <td>$ {{ sub.price }}</td>
+                <td>
+                    {% for extra in sub.extras.all %}
+                    <li>{{ extra }}</li>
+                    {% endfor %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+    {% endif %}
 </div>
+
 {% endblock %}
