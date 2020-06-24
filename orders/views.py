@@ -72,6 +72,10 @@ def addToCart(request):
         # Get the product type
         productType = product['type']
 
+        # Get the user object
+        username = request.user.username
+        userObject = User.objects.get(username=username)
+
         # Use the product type to output
         if productType == 'Sub':
             # Sub attributes: Name, Size, Extras, Quantity
@@ -91,8 +95,6 @@ def addToCart(request):
             totalCost = (subObject.price + subExtraCost) * int(productQuantity)
 
             # Get the user's cart
-            username = request.user.username
-            userObject = User.objects.get(username=username)
             userCart = Cart.objects.filter(username=userObject).first()
 
             if userCart is None:
@@ -203,7 +205,7 @@ def cart(request):
         if userCart is not None:
             # Count the number of objects in the cart
             numDinnerPlatters = userCart.dinnerPlatters.all().count()
-            numSalads = userCart.subs.all().count()
+            numSalads = userCart.salads.all().count()
             numSubs = userCart.subs.all().count()
             numPastas = userCart.pastas.all().count()
             numPizzas = userCart.pizzas.all().count()
