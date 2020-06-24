@@ -1,4 +1,7 @@
-body { padding-top: 80px; }
+body {
+    padding-top: 80px;
+    background:linear-gradient(to right, #009246 0, #009246 33%, #FFF 33%, #FFF 66%, #ce2b37 66%, #ce2b37 100%);
+}
 
 main .form-control
 {
@@ -40,6 +43,11 @@ tr:nth-child(even) {
     background-color: #f2f2f2;
   }
 
+tr:nth-child(odd) {
+    background-color: #FFF;
+  }
+
+
 .navbar {
     position: fixed;
     top: 0;
@@ -60,6 +68,9 @@ tr:nth-child(even) {
     flex-wrap: wrap;
     justify-content: space-around;
     align-items: baseline;
+    background-color: #FFF;
+    padding-bottom: 20px;
+    box-shadow: 5px 10px 18px #888888;
 }
 
 .card {

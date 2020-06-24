@@ -7,10 +7,9 @@ Home
 
 {% block content %}
 
-    <legend class="border-bottom mb-4">Pizzas</legend>
-
     <div class="container menu-container">
         <!-- PIZZAS -->
+        <legend class="border-bottom mb-4">Pizzas</legend>
         <div class="card text-center">
             <div class="card-body">
                 <h5 class="card-title">Regular</h5>
@@ -33,18 +32,22 @@ Home
         </div>
     </div>
 
+    <br>
+
     <div class="container menu-container">
         <!-- SUBS -->
         <legend class="border-bottom mb-4">Subs</legend>
-        <div class="col-md-4">
+        <div class="col-md-6">
             {% for sub in subs %}
                 <li>
                     {{ sub }}
                 </li>
             {% endfor %}
+            <br>
         </div>
+        <br>
         <div class="col-md-4">
-            <h2>Extras</h2>
+            <legend class="border-bottom mb-4">Extras</legend>
             {% for extra in subExtras %}
                 <li>
                     {{ extra }}
@@ -71,13 +74,15 @@ Home
     <div class="container menu-container">
         <!-- PASTAS -->
         <legend class="border-bottom mb-4">Pastas</legend>
-        <div class="col-md-4">
+        <div class="col-md-6">
             {% for pasta in pastas %}
                 <li>
                     {{ pasta }}
                 </li>
             {% endfor %}
+            <br>
         </div>
+        <br>
         <div class="col-md-4">
             <div class="card text-center">
                 <div class="card-body">
@@ -90,15 +95,20 @@ Home
                 </div>
             </div>
         </div>
+    </div>
+    <br>
+    <div class="container menu-container">
         <!-- DINNER PLATTERS -->
         <legend class="border-bottom mb-4">Dinner Platters</legend>
-        <div class="col-md-4">
+        <div class="col-md-6">
             {% for dp in platters %}
                 <li>
                     {{ dp }}
                 </li>
             {% endfor %}
+            <br>
         </div>
+        <br>
         <div class="col-md-4">
             <div class="card text-center">
                 <div class="card-body">
@@ -111,15 +121,20 @@ Home
                 </div>
             </div>
         </div>
+    </div>
+    <br>
+    <div class="container menu-container">
         <!-- SALADS -->
         <legend class="border-bottom mb-4">Salads</legend>
-        <div class="col-md-4">
+        <div class="col-md-6">
             {% for salad in salads %}
                 <li>
                     {{ salad }}
                 </li>
             {% endfor %}
+            <br>
         </div>
+        <br>
         <div class="col-md-4">
             <div class="card text-center">
                 <div class="card-body">

@@ -9,7 +9,7 @@ def validate_price(price):
     """ Valid Prices should be positive decimal values with 2 decimal places """
     if (price is None or price <= 0):
         raise ValidationError(
-            _('%(price)s must be a positive, 2 decimal value'),
+            ('%(price)s must be a positive, 2 decimal value'),
             params={'price': price},
     )
 
