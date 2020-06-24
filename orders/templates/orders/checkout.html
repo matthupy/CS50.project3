@@ -7,9 +7,53 @@ Checkout
 {% block content %}
 
 <div id="cart" class="container">
+    <!-- ==== Dinner Platters ==== -->
+    {% if dinnerPlatters %}
+    <h3>Dinner Platters</h3>
+    <br>
+        <table class="checkout_table">
+            <tr>
+                <th>Name</th>
+                <th>Size</th>
+                <th>Price</th>
+            </tr>
+            {% for platter in dinnerPlatters %}
+            <tr>
+                <td>{{ platter.name }}</td>
+                <td>{{ platter.get_size_display }}</td>
+                <td>$ {{ platter.price }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
+    <hr>
+
+
+    <!-- ==== SALADS ==== -->
+    {% if salads %}
+    <h3>Salads</h3>
+    <br>
+        <table class="checkout_table">
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+            </tr>
+            {% for salad in salads %}
+            <tr>
+                <td>{{ salad.name }}</td>
+                <td>$ {{ salad.price }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
+    <hr>
+
+    <!-- ==== SUBS ==== -->
+    {% if subs %}
     <h3>Subs</h3>
     <br>
-    {% if subs %}
         <table class="checkout_table">
             <tr>
                 <th>Name</th>
@@ -30,8 +74,28 @@ Checkout
             </tr>
             {% endfor %}
         </table>
-
     {% endif %}
+
+    <hr>
+
+    <!-- ==== Pastas ==== -->
+    {% if pastas %}
+    <h3>Pastas</h3>
+    <br>
+        <table class="checkout_table">
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+            </tr>
+            {% for pasta in pastas %}
+            <tr>
+                <td>{{ pasta.name }}</td>
+                <td>$ {{ pasta.price }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
 </div>
 
 {% endblock %}

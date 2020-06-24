@@ -363,51 +363,63 @@ Home
         }
 
         function addDinnerPlatterToCart() {
-            var type = 'Dinner Platter';
-            var name = null;
-            var style = $('select#platter_style').val()
-            var size = $('select#platter_size').val()
-            var extras = $('select#platter_extras').val()
-            var toppings = $('select#platter_toppings').val()
-            var quantity = $('select#platter_quantity').val()
 
-            addProduct(type, name, style, size, extras, toppings, quantity);
+            var dinnerPlatter = {
+                'type': 'Dinner Platter',
+                'name': document.getElementById('platter_name').value,
+                'size': document.getElementById('platter_size').value,
+                'quantity': document.getElementById('platter_quantity').value
+            };
+
+            addToCart(dinnerPlatter)
+
+            // Close the Modal
+            $('#platterModal').modal('hide');
         }
 
         function addPastaToCart() {
-            var type = 'Pasta';
-            var name = $('select#pasta_name').val();
-            var style = null;
-            var size = null;
-            var extras = null;
-            var toppings = null;
-            var quantity = $('select#pasta_quantity').val()
 
-            addProduct(type, name, style, size, extras, toppings, quantity);
+            var pasta = {
+                'type': 'Pasta',
+                'name': document.getElementById('pasta_name').value,
+                'quantity': document.getElementById('pasta_quantity').value
+            };
+
+            addToCart(pasta);
+
+            // Close the Modal
+            $('#pastaModal').modal('hide');
         }
 
         function addPizzaToCart() {
-            var type = 'Pizza';
-            var name = null;
-            var style = $('select#pizza_style').val()
-            var size = $('select#pizza_size').val()
-            var extras = $('select#pizza_extras').val()
-            var toppings = $('select#pizza_toppings').val()
-            var quantity = $('select#pizza_quantity').val()
 
-            addProduct(type, name, style, size, extras, toppings, quantity);
+            var pizza = {
+                'type': 'Pizza',
+                'style': document.getElementById('pizza_style').value,
+                'size': document.getElementById('pizza_size').value,
+                'extras': $('select#pizza_extras').val(),
+                'toppings': $('select#pizza_toppings').val(),
+                'quantity': document.getElementById('pizza_quantity').value
+            }
+
+            addToCart(pizza)
+
+            // Close the Modal
+            $('#pizzaModal').modal('hide');
         }
 
         function addSaladToCart() {
-            var type = 'Salad';
-            var name = $('select#salad_name').val();
-            var style = null;
-            var size = null;
-            var extras = null;
-            var toppings = null;
-            var quantity = $('select#salad_quantity').val()
 
-            addProduct(type, name, style, size, extras, toppings, quantity);
+            var salad = {
+                'type': 'Salad',
+                'name': document.getElementById('salad_name').value,
+                'quantity': document.getElementById('salad_quantity').value
+            };
+
+            addToCart(salad);
+
+            // Close the Modal
+            $('#saladModal').modal('hide');
         }
 
         function addSubToCart() {
@@ -420,8 +432,10 @@ Home
                 'quantity': document.getElementById('sub_quantity').value
             };
 
-            console.info(JSON.stringify(sub))
             addToCart(sub);
+
+            // Close the Modal
+            $('#subModal').modal('hide');
         }
 
         function addToCart(product) {

@@ -98,12 +98,60 @@ def addToCart(request):
             if userCart is None:
                 userCart = Cart.objects.create(username=userObject)
 
-            subObjectCheck = Sub.objects.get(pk=subObject.id)
-
-            print(int(productQuantity))
             for x in range(int(productQuantity)):
                 userCart.subs.add(Sub.objects.get(id=subObject.id))
                 userCart.subExtras.add(*subExtraObjects)
+
+        elif productType == 'Pizza':
+            productId = product['name']
+            productName = Pizza.objects.values_list('name').get(pk=productId)[0]
+            productSize = product['size']
+            pizzaObject = Pizza.objects.filter(name=productName).filter(size=productSize).first()
+            productQuantity = product['quantity']
+
+
+        elif productType == 'Dinner Platter':
+            productId = product['name']
+            productName = DinnerPlatter.objects.values_list('name').get(pk=productId)[0]
+            productSize = product['size']
+            dinnerPlatterObject = DinnerPlatter.objects.filter(name=productName).filter(size=productSize).first()
+            productQuantity = product['quantity']
+
+            # Get the user's cart
+            userCart = Cart.objects.filter(username=User.objects.get(username=request.user.username)).first()
+
+            if userCart is None:
+                userCart = Cart.objects.create(username=userObject)
+
+            for x in range(int(productQuantity)):
+                userCart.dinnerPlatters.add(DinnerPlatter.objects.get(id=dinnerPlatterObject.id))
+
+        elif productType == 'Salad':
+            saladObject = Salad.objects.get(pk=product['name'])
+            productQuantity = product['quantity']
+
+            # Get the user's cart
+            userCart = Cart.objects.filter(username=User.objects.get(username=request.user.username)).first()
+
+            if userCart is None:
+                userCart = Cart.objects.create(username=userObject)
+
+            for x in range(int(productQuantity)):
+                userCart.salads.add(Salad.objects.get(id=saladObject.id))
+
+        elif productType == 'Pasta':
+            pastaObject = Pasta.objects.get(pk=product['name'])
+            productQuantity = product['quantity']
+
+            # Get the user's cart
+            userObject = User.objects.get(username=request.user.username)
+            userCart = Cart.objects.filter(username=userObject).first()
+
+            if userCart is None:
+                userCart = Cart.objects.create(username=userObject)
+
+            pastaObject = Pasta.objects.get(id=pastaObject.id)
+            userCart.pastas.add(pastaObject)
 
         else:
             print('ToDo')
@@ -129,14 +177,18 @@ def checkout(request):
         # Get the user's cart
         cart = Cart.objects.filter(username=User.objects.get(username=request.user.username)).first()
 
-        context = {
-            'subs': cart.subs.all()
-        }
+        if cart is not None:
+            context = {
+                'dinnerPlatters': cart.dinnerPlatters.all(),
+                'salads': cart.salads.all(),
+                'subs': cart.subs.all(),
+                'pastas': cart.pastas.all()
+            }
 
-        return render(request, "orders/checkout.html", context)
+            return render(request, "orders/checkout.html", context)
+        else:
+            return redirect('index')
     else:
-
-
         return render(request, "orders/checkout.html")
 
 @login_required(login_url='/login/')
@@ -148,14 +200,18 @@ def cart(request):
         # Get the user's cart
         userCart = Cart.objects.filter(username=User.objects.get(username=username)).first()
 
-        # Count the number of objects in the cart
-        numSubs = userCart.subs.all().count()
+        if userCart is not None:
+            # Count the number of objects in the cart
+            numDinnerPlatters = userCart.dinnerPlatters.all().count()
+            numSalads = userCart.subs.all().count()
+            numSubs = userCart.subs.all().count()
+            numPastas = userCart.pastas.all().count()
+            numPizzas = userCart.pizzas.all().count()
 
-        # Sum up the number of objects
-        total = numSubs
-
-        # Return the number of objects to be displayed on the page
-        data = total
+            # Sum up the number of objects
+            total = numDinnerPlatters + numSalads + numSubs + numPastas + numPizzas
+        else:
+            total = 0 # Default the cart indicator
 
         return HttpResponse(total)
     else:

@@ -89,6 +89,9 @@ class Cart(models.Model):
     dinnerPlatters = models.ManyToManyField(DinnerPlatter, blank=True)
     total = models.DecimalField(help_text="Price in USD", max_digits=6, decimal_places=2, default=0)
 
+    def __str__(self):
+        return f"{self.username.username}"
+
 class PizzaOrder(Pizza):
     CHOICES = (
         ('CH', 'Cheese'),
