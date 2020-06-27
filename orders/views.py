@@ -123,7 +123,6 @@ def addToCart(request):
         elif productType == 'Pizza':
             productStyle = product['style']
             pizzaType = product['type']
-            productExtras = product['extras']
             productSize = product['size']
             productToppings = product['toppings']
             productQuantity = product['quantity']
