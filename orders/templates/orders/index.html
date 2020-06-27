@@ -50,7 +50,7 @@ Home
             <legend class="border-bottom mb-4">Extras</legend>
             {% for extra in subExtras %}
                 <li>
-                    {{ extra }}
+                    {{ extra.name }} - $ {{ extra.price }}
                 </li>
             {% endfor %}
             <br>

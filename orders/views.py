@@ -1,16 +1,16 @@
 import json
-from django.http import HttpResponse, JsonResponse
 import django.http.request
-from django.shortcuts import render, redirect
-from django.db.models import Sum
+import traceback
 
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-
+from django.core.mail import send_mail
+from django.db.models import Sum
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render, redirect
 from orders.forms import DinnerPlatterForm, PastaForm, PizzaForm, SaladForm, SubForm
-from orders.models import (Cart, DinnerPlatter, Pasta, Pizza, Salad, Sub, SubExtra,
-                           Topping)
+from orders.models import Cart, DinnerPlatter, Pasta, Pizza, Salad, Sub, SubExtra, Topping
 
 # Create your views here.
 def index(request):
@@ -305,19 +305,45 @@ def checkout(request):
 def placeOrder(request):
     if request.method == 'POST':
         try:
-            # Remove all items from the cart
+            # Send a confirmation email
             userObject = User.objects.get(username=request.user.username)
             userCart = Cart.objects.filter(username=userObject).first()
 
-            if userCart is not None:
-                userCart.delete()
+            if (userCart is not None):
+                platterCost = userCart.dinnerPlatters.aggregate(Sum('price'))['price__sum'] or 0
+                saladCost = userCart.salads.aggregate(Sum('price'))['price__sum'] or 0
+                subCost = userCart.subs.aggregate(Sum('price'))['price__sum'] or 0
+                pastaCost = userCart.pastas.aggregate(Sum('price'))['price__sum'] or 0
+                pizzaCost = userCart.pizzas.aggregate(Sum('price'))['price__sum'] or 0
 
-            # At the end, redirect to the Order Confirmation page
-            return redirect('index')
-        except:
+                total = str(round(platterCost + saladCost + subCost + pastaCost + pizzaCost, 2))
+
+                print("Before sending confirmation email")
+
+                send_mail(
+                    'Pinocchio''s | Order Confirmation',
+                    f'Thank you for your order!\nPlease allow 15-20 minutes for delivery.\n\nTotal: $ {total}',
+                    'donotreply@pinocchiospizza.com',
+                    [userObject.email]
+                )
+
+                print("Before clearing the cart")
+
+                # Remove all items from the cart
+
+                if userCart is not None:
+                    userCart.delete()
+
+                print("Before return")
+
+                # At the end, redirect to the Order Confirmation page
+                return redirect('index')
+        except Exception:
+            traceback.print_exc()
             messages.error(request, 'Oops! Something went wrong, please try again.')
             return redirect('index')
     else:
+        print("Ran into an error somewhere")
         return redirect('index')
 
 @login_required(login_url='/login/')

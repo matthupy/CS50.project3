@@ -52,7 +52,7 @@ class SubExtra(models.Model):
     price = models.DecimalField(help_text="Price in USD", max_digits=6, decimal_places=2)
 
     def __str__(self):
-        return f"{self.name} - $ {self.price}"
+        return f"{self.name}"
 
 class Sub(models.Model):
     name = models.CharField(max_length=40)
