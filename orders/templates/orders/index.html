@@ -475,8 +475,6 @@ Home
         }
 
         function updateCartBadge() {
-            console.info('Updating cart badge')
-
             var loginButton = document.getElementById('login_btn');
 
             if(loginButton == null) {
@@ -498,9 +496,7 @@ Home
                 // Send the request
                 request.send()
             };
-
-            console.info('Cart badge updated')
-        }
+        };
 
         document.addEventListener('DOMContentLoaded', () => {
 
@@ -517,7 +513,7 @@ Home
                             addPastaToCart();
                             break;
                         case 'pizzaAddCart':
-                            addPizzaToCart;
+                            addPizzaToCart();
                             break;
                         case 'saladAddCart':
                             addSaladToCart();

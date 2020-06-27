@@ -73,6 +73,19 @@ tr:nth-child(odd) {
     box-shadow: 5px 10px 18px #888888;
 }
 
+.success-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: baseline;
+    background-color: #FFF;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    box-shadow: 5px 10px 18px #888888;
+}
+
+
 .card {
     width: 14rem;
 }

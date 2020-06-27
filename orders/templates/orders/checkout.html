@@ -7,6 +7,24 @@ Checkout
 {% block content %}
 
 <div id="cart" class="container">
+    <div class="container menu-container">
+        <legend class="border-bottom mb-4">Checkout</legend>
+        <div class="col-md-3"></div>
+        <div class="col-md-3 center-block" style="align-items:right">
+            <button type="button" class="place-order btn btn-primary">
+                Place your Order
+            </button>
+        </div>
+        <div class="col-md-3 center-block" style="align-items:right">
+            <button type="button" class="clear-cart btn btn-secondary">
+                Clear your Cart
+            </button>
+        </div>
+        <div class="col-md-3"></div>
+        <br>
+        <hr>
+    </div>
+    <br>
 
     <!-- ==== Dinner Platters ==== -->
     {% if dinnerPlatters %}
@@ -60,29 +78,35 @@ Checkout
 
     <!-- ==== SUBS ==== -->
     {% if subs %}
-    <legend class="border-bottom mb-4">Subs</legend>
+    <div class="container menu-container">
+        <legend class="border-bottom mb-4">Subs</legend>
+        <table class="checkout_table">
+            <tr>
+                <th>Name</th>
+                <th>Size</th>
+                <th>Base Price</th>
+                <th>Extras</th>
+            </tr>
+            {% for sub in subs %}
+            <tr>
+                <td>{{ sub.name }}</td>
+                <td>{{ sub.get_size_display }}</td>
+                <td>$ {{ sub.price }}</td>
+                <td>
+                    {% for extra in sub.extras.all %}
+                    <p>{{ extra }}</p>
+                    {% empty %}
+                    <p>None</p>
+                    {% endfor %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <hr>
+        <br>
+    </div>
     <br>
-    <table class="checkout_table">
-        <tr>
-            <th>Name</th>
-            <th>Size</th>
-            <th>Base Price</th>
-            <th>Extras</th>
-        </tr>
-        {% for sub in subs %}
-        <tr>
-            <td>{{ sub.name }}</td>
-            <td>{{ sub.get_size_display }}</td>
-            <td>$ {{ sub.price }}</td>
-            <td>
-                {% for extra in sub.extras.all %}
-                <li>{{ extra }}</li>
-                {% endfor %}
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
-    <hr>
+
     {% endif %}
 
 
@@ -106,8 +130,130 @@ Checkout
         <hr>
         <br>
     </div>
+    <br>
+    {% endif %}
+
+    <!-- ==== PIZZAS ==== -->
+    {% if pizzas %}
+    <div class="container menu-container">
+    <legend class="border-bottom mb-4">Pizzas</legend>
+        <br>
+        <table class="checkout_table">
+            <tr>
+                <th>Style</th>
+                <th>Size</th>
+                <th>Type</th>
+                <th>Toppings</th>
+                <th>Price</th>
+            </tr>
+            {% for pizza in pizzas %}
+            <tr>
+                <td>{{ pizza.get_style_display }}</td>
+                <td>{{ pizza.get_size_display }}</td>
+                <td>
+                    {% if pizza.toppings.all|length == 0 %}
+                    Cheese
+                    {% elif pizza.toppings.all|length > 0 and pizza.toppings.all|length < 4 %}
+                        {{ pizza.toppings.all|length }} Topping
+                    {% else %}
+                    Special
+                    {% endif %}
+                </td>
+                <td>
+                    {% for topping in pizza.toppings.all %}
+                    <p>{{ topping }}</p>
+                    {% endfor %}
+                </td>
+                <td>$ {{ pizza.price }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <hr>
+        <br>
+    </div>
     {% endif %}
 
 </div>
+
+<script>
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for(var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // is this the cookie we want?
+                if(cookie.substring(0, name.length+1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length+1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    function updateCartBadge() {
+        var loginButton = document.getElementById('login_btn');
+
+        if(loginButton == null) {
+            // Update cart items count from database
+            var CSRFToken = null;
+
+            // Get the CSRF Token
+            CSRFToken = getCookie('csrftoken');
+
+            const request = new XMLHttpRequest();
+            request.open('GET','/cart');
+            request.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+            request.onload = () => {
+                const data = request.responseText
+                document.querySelector('#cart_badge').dataset.items = parseInt(data);
+                document.querySelector('#cart_badge').textContent = parseInt(data);
+            };
+
+            // Send the request
+            request.send()
+        };
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // Add actions to the Place Order and Clear Cart buttons
+        document.querySelectorAll('.place-order').forEach(item => {
+            item.addEventListener('click', () => {
+                var CSRFToken = null;
+                // Get the CSRF Token
+                CSRFToken = getCookie('csrftoken');
+
+                const request = new XMLHttpRequest();
+                request.open('POST','/placeOrder');
+                request.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+                request.onload = () => {
+                        window.location.replace("{% url 'orderSuccess' %}")
+                    };
+
+                // Send the request
+                request.send();
+            });
+        });
+
+        document.querySelectorAll('.clear-cart').forEach(item => {
+            item.addEventListener('click', () => {
+                var CSRFToken = null;
+                // Get the CSRF Token
+                CSRFToken = getCookie('csrftoken');
+
+                const request = new XMLHttpRequest();
+                request.open('POST','/clearCart');
+                request.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+                request.onload = () => {
+                        window.location.replace("{% url 'index' %}")
+                    };
+
+                // Send the request
+                request.send();
+            });
+        });
+    });
+</script>
 
 {% endblock %}
