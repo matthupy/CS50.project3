@@ -5,7 +5,7 @@ from orders.models import DinnerPlatterOrder, PastaOrder, PizzaOrder, SaladOrder
 class PizzaForm(ModelForm):
     class Meta:
         model = PizzaOrder
-        fields = ['style', 'size', 'extras', 'toppings', 'quantity']
+        fields = ['style', 'size', 'toppings', 'quantity']
 
 class SubForm(ModelForm):
     class Meta:
