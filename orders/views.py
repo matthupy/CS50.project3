@@ -198,9 +198,6 @@ def addToCart(request):
                 else:
                     raise Exception("Pizza price not found!")
 
-            # Add the price of the toppings
-            pizzaPrice += Toppings.objects.filter(id__in=prodcutToppings).aggregate(sum)
-
             pizza = Pizza.objects.create(style=productStyle, size=productSize, price=pizzaPrice)
             pizza.toppings.set(productToppings)
 
@@ -283,12 +280,19 @@ def checkout(request):
         cart = Cart.objects.filter(username=User.objects.get(username=request.user.username)).first()
 
         if cart is not None:
+            platterCost = cart.dinnerPlatters.aggregate(Sum('price'))['price__sum'] or 0
+            saladCost = cart.salads.aggregate(Sum('price'))['price__sum'] or 0
+            subCost = cart.subs.aggregate(Sum('price'))['price__sum'] or 0
+            pastaCost = cart.pastas.aggregate(Sum('price'))['price__sum'] or 0
+            pizzaCost = cart.pizzas.aggregate(Sum('price'))['price__sum'] or 0
+
             context = {
                 'dinnerPlatters': cart.dinnerPlatters.all(),
                 'salads': cart.salads.all(),
                 'subs': cart.subs.all(),
                 'pastas': cart.pastas.all(),
-                'pizzas': cart.pizzas.all()
+                'pizzas': cart.pizzas.all(),
+                'total': str(round(platterCost + saladCost + subCost + pastaCost + pizzaCost, 2))
             }
 
             return render(request, "orders/checkout.html", context)

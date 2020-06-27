@@ -9,7 +9,9 @@ Checkout
 <div id="cart" class="container">
     <div class="container menu-container">
         <legend class="border-bottom mb-4">Checkout</legend>
-        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <h3>Total: $ {{ total }}</h3>
+        </div>
         <div class="col-md-3 center-block" style="align-items:right">
             <button type="button" class="place-order btn btn-primary">
                 Place your Order
@@ -20,7 +22,6 @@ Checkout
                 Clear your Cart
             </button>
         </div>
-        <div class="col-md-3"></div>
         <br>
         <hr>
     </div>
@@ -84,21 +85,21 @@ Checkout
             <tr>
                 <th>Name</th>
                 <th>Size</th>
-                <th>Base Price</th>
                 <th>Extras</th>
+                <th>Price</th>
             </tr>
             {% for sub in subs %}
             <tr>
                 <td>{{ sub.name }}</td>
                 <td>{{ sub.get_size_display }}</td>
-                <td>$ {{ sub.price }}</td>
                 <td>
-                    {% for extra in sub.extras.all %}
-                    <p>{{ extra }}</p>
-                    {% empty %}
-                    <p>None</p>
-                    {% endfor %}
+                    {% if sub.extras.all %}
+                        {{ sub.extras.all|join:", " }}
+                    {% else %}
+                        None
+                    {% endif %}
                 </td>
+                <td>$ {{ sub.price }}</td>
             </tr>
             {% endfor %}
         </table>
@@ -160,9 +161,11 @@ Checkout
                     {% endif %}
                 </td>
                 <td>
-                    {% for topping in pizza.toppings.all %}
-                    <p>{{ topping }}</p>
-                    {% endfor %}
+                    {% if pizza.toppings.all %}
+                        {{ pizza.toppings.all|join:", " }}
+                    {% else %}
+                        None
+                    {% endif %}
                 </td>
                 <td>$ {{ pizza.price }}</td>
             </tr>
